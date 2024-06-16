@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helmet Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 50px;
+            text-align: center;
+        }
+        form {
+            margin: 20px 0;
+        }
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background: #5cb85c;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #4cae4c;
+        }
+        .media-container {
+            margin-top: 20px;
+        }
+        img, video {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Helmet Detection</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        {% if filename %}
+        <div class="media-container">
+            <h2>Uploaded Media:</h2>
+            {% if filename.split('.')[-1] in ['png', 'jpg', 'jpeg'] %}
+            <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image">
+            <h2>Processed Image:</h2>
+            <img src="{{ url_for('display_file', filename=filename) }}" alt="Processed Image">
+            {% else %}
+            <video controls>
+                <source src="{{ url_for('uploaded_file', filename=filename) }}" type="video/{{ filename.split('.')[-1] }}">
+                Your browser does not support the video tag.
+            </video>
+            <h2>Processed Video:</h2>
+            <video controls>
+                <source src="{{ url_for('display_file', filename=filename) }}" type="video/{{ filename.split('.')[-1] }}">
+                Your browser does not support the video tag.
+            </video>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
